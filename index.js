@@ -1,31 +1,109 @@
 "use strict";
 
-const winston = require('winston');
+const winston = require('winston'),
+    logger = new (winston.Logger)({
+        transports: [
+            new (winston.transports.Console)({
+                level: (process.env.NODE_ENV === "development") ? "debug" : "info"
+            })
+        ]
+    }),
+    TEST_NAME_KEY_WORD = "test",
+    TEST_CASE_RESULT_STATUSES = {
+        PASS: "pass",
+        FAIL: "fail"
+    };
 
-const logger = new (winston.Logger)({
-    transports: [
-        new (winston.transports.Console)({
-            level: (process.env.NODE_ENV === "development") ? "debug" : "info"
-        })
-    ]
-});
+class TestCaseResult {
+    constructor(testCaseName, testName, status, error) {
+        this.testCaseName = testCaseName;
+        this.testName = testName;
+        this.status = status;
+        this.error = error;
+    }
 
-const TEST_NAME_KEY_WORD = "test";
+    get isPassedStatus() {
+        return this.status === TEST_CASE_RESULT_STATUSES.PASS;
+    }
+
+    get isFailedStatus() {
+        return this.status === TEST_CASE_RESULT_STATUSES.FAIL;
+    }
+}
 
 class BaseTestCase {
     constructor() {
-        logger.debug("[BaseTestCase] - constructor");
+        this.__name = this.constructor.name;
+        this.__results = [];
+        logger.silly("[BaseTestCase] - constructor");
         return this;
     }
 
     setup() {
-        logger.debug("[BaseTestCase] - setup");
+        logger.silly("[BaseTestCase] - setup");
         return this;
     }
 
     teardown() {
-        logger.debug("[BaseTestCase] - teardown");
+        logger.silly("[BaseTestCase] - teardown");
         return this;
+    }
+
+    // PRIVATE API
+
+    get __tests() {
+        let methods = new Set(),
+            testCase = this;
+
+        while (testCase = Reflect.getPrototypeOf(testCase)) {
+            let keys = Reflect.ownKeys(testCase);
+            keys.forEach(k => {
+                if (k.startsWith(TEST_NAME_KEY_WORD)) {
+                    methods.add(k);
+                }
+            });
+        }
+        return methods;
+    }
+
+    __run() {
+        logger.info(`[${this.__name}] - ${this.__tests.size} tests`);
+
+        this.__tests.forEach(testName => {
+            this.setup();
+
+            try {
+                this[testName]();
+                this.__results.push(new TestCaseResult(this.__name, testName, TEST_CASE_RESULT_STATUSES.PASS));
+            } catch (error) {
+                this.__results.push(new TestCaseResult(this.__name, testName, TEST_CASE_RESULT_STATUSES.FAIL, error));
+            }
+
+            this.teardown();
+
+            this.__updateProgress();
+        });
+
+        // provide a little reading room after a test case report is rendered
+        console.log("\n");
+
+        return this.__results;
+    }
+
+    __updateProgress() {
+        let progress = this.__results.reduce((a, newResult) => {
+
+            if (newResult.isPassedStatus) {
+                return a + "."
+            }
+            if (newResult.isFailedStatus) {
+                return a + "E"
+            }
+        }, "");
+
+        process.stdout.clearLine();
+        process.stdout.cursorTo(0);
+        process.stdout.write("\t" + progress);
     }
 }
 
@@ -40,11 +118,7 @@ function run(TestCases) {
     TestCases.forEach(TestCase => {
         const testCase = new TestCase();
 
-        testCase.setup();
-
-        results = results.concat(__runTests(testCase));
-
-        testCase.teardown();
+        results = results.concat(testCase.__run());
     });
 
     console.timeEnd("time taken");
@@ -79,67 +153,4 @@ function __runReport(results) {
     } else {
         process.exit(0);
     }
-}
-
-function __runTests(testCase) {
-    let testCaseName = testCase.constructor.name,
-        tests = __getAllTests(testCase),
-        results = [];
-
-    logger.info(`[${testCaseName}] - ${tests.size} tests`);
-
-    tests.forEach(test => {
-        try {
-            testCase[test]();
-            results.push({
-                testCaseName: testCaseName,
-                testName: test,
-                status: "pass"
-            });
-        } catch (error) {
-            results.push({
-                testCaseName: testCaseName,
-                testName: test,
-                error: error,
-                status: "fail"
-            });
-        }
-
-        __updateTestResultProgress(results);
-    });
-
-    // provide a little reading room after a test case report is rendered
-    console.log("\n");
-
-    return results;
-}
-
-function __updateTestResultProgress(results) {
-    let progress = results.reduce((a, newResult) => {
-
-        if (newResult.status === "pass") {
-            return a + "."
-        }
-        if (newResult.status === "fail") {
-            return a + "E"
-        }
-    }, "");
-
-    process.stdout.clearLine();
-    process.stdout.cursorTo(0);
-    process.stdout.write("\t" + progress);
-}
-
-function __getAllTests(testCase) {
-    let methods = new Set();
-
-    while (testCase = Reflect.getPrototypeOf(testCase)) {
-        let keys = Reflect.ownKeys(testCase);
-        keys.forEach(k => {
-            if (k.startsWith(TEST_NAME_KEY_WORD)) {
-                methods.add(k);
-            }
-        });
-    }
-    return methods;
 }
