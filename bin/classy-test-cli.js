@@ -2,7 +2,7 @@
 
 "use strict";
 
-const ClassyTestRunner = require("./classy-test"),
+const ClassyTestRunner = require("../lib/classy-test"),
     argv = require('yargs')
         .usage('$0 [files]')
         .alias('h', 'help')
