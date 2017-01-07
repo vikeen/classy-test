@@ -1,1 +1,1 @@
-# class-test
+# classy-test
