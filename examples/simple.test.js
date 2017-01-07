@@ -18,8 +18,6 @@ class SimpleComponentSumTestCase extends classyTest.BaseTestCase {
     }
 }
 
-module.exports = {
-    TestCases: [
-        SimpleComponentSumTestCase
-    ]
-};
+module.exports = [
+    SimpleComponentSumTestCase
+];

@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("../lib/helpers/logger"),
+const logger = require("../lib/helpers/logger")(),
     path = require("path");
 
 class ClassyTestRunner {
@@ -43,14 +43,14 @@ class ClassyTestRunner {
     }
 
     testFile(filePath) {
-        let TestCases = require(filePath).TestCases;
+        logger.debug(`testing file - ${filePath}`);
+        let TestCases = require(filePath);
 
-        if (!Array.isArray(TestCases)) {
-            TestCases = [TestCases];
-        }
+        logger.debug(`found ${TestCases.length} test case(s)`);
 
         TestCases.forEach(TestCase => {
             const testCase = new TestCase();
+            logger.debug(`running test case [${testCase.constructor.name}]`);
             testCase.__run();
             this.results = this.results.concat(testCase.__results);
         });
