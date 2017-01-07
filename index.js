@@ -66,7 +66,7 @@ function __runReport(results) {
         failedTests = results.filter(item => item.status === "fail");
 
     failedTests.forEach(failedTest => {
-        logger.info(failedTest.testCaseName, ":", failedTest.testName);
+        logger.error(`Test Case Failed (${failedTest.testCaseName}:${failedTest.testName})`);
         logger.error(failedTest.error);
     });
 
@@ -86,7 +86,7 @@ function __runTests(testCase) {
         tests = __getAllTests(testCase),
         results = [];
 
-    logger.info(testCaseName + ":", tests.size, "tests");
+    logger.info(`[${testCaseName}] - ${tests.size} tests`);
 
     tests.forEach(test => {
         try {
