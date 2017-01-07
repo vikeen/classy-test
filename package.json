@@ -4,7 +4,7 @@
   "description": "Opinionated class based testing framework",
   "main": "index.js",
   "scripts": {
-    "test": "node bin/classy-test-cli.js test/**/*.test.js"
+    "test": "node bin/classy-test-cli.js -d test"
   },
   "author": "John Rake",
   "license": "ISC",
@@ -12,6 +12,7 @@
     "chai": "3.5.0"
   },
   "dependencies": {
+    "recursive-readdir": "2.1.0",
     "winston": "2.3.0",
     "yargs": "6.6.0"
   }
