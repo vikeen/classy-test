@@ -1,19 +1,7 @@
-#!/usr/bin/env node
-
 "use strict";
 
-const winston = require('winston'),
-    logger = require("../lib/helpers/logger"),
-    debug = process.env.NODE_ENV === 'development',
+const logger = require("../lib/helpers/logger"),
     path = require("path");
-
-const argv = require('yargs')
-    .usage('$0 [files]')
-    .alias('h', 'help')
-    .help()
-    .argv;
-
-const files = argv._;
 
 class ClassyTestRunner {
     constructor(files) {
@@ -26,6 +14,24 @@ class ClassyTestRunner {
         this.testFiles();
         this.report();
         console.timeEnd("time taken");
+
+        if (this.hasFailedTest) {
+            process.exit(1);
+        } else {
+            process.exit(0);
+        }
+    }
+
+    get hasFailedTest() {
+        return this.failedTests.length > 0;
+    }
+
+    get failedTests() {
+        return this.results.filter(item => item.isFailedStatus);
+    }
+
+    get passedTests() {
+        return this.results.filter(item => item.isPassedStatus);
     }
 
 
@@ -45,31 +51,21 @@ class ClassyTestRunner {
 
         TestCases.forEach(TestCase => {
             const testCase = new TestCase();
-
-            this.results.concat(testCase.__run());
+            testCase.__run();
+            this.results = this.results.concat(testCase.__results);
         });
     }
 
     report() {
-        const passedTests = this.results.filter(item => item.status === "pass"),
-            failedTests = this.results.filter(item => item.status === "fail");
-
-        failedTests.forEach(failedTest => {
+        this.failedTests.forEach(failedTest => {
             logger.error(`Test Case Failed (${failedTest.testCaseName}:${failedTest.testName})`);
             logger.error(failedTest.error);
         });
 
         logger.info("================================");
-        logger.info(`pass: ${passedTests.length} -- fail: ${failedTests.length}`);
+        logger.info(`pass: ${this.passedTests.length} -- fail: ${this.failedTests.length}`);
         logger.info("================================");
-
-        if (failedTests.length > 0) {
-            process.exit(1);
-        } else {
-            process.exit(0);
-        }
-
     }
 }
 
-new ClassyTestRunner(files).run();
+module.exports = ClassyTestRunner;
