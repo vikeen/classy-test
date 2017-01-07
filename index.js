@@ -1,23 +1,30 @@
 "use strict";
 
+const winston = require('winston');
+
+const logger = new (winston.Logger)({
+    transports: [
+        new (winston.transports.Console)({
+            level: (process.env.NODE_ENV === "development") ? "debug" : "info"
+        })
+    ]
+});
+
 const TEST_NAME_KEY_WORD = "test";
 
 class BaseTestCase {
     constructor() {
-        console.log("base: constructor");
+        logger.debug("[BaseTestCase] - constructor");
         return this;
     }
 
     setup() {
-        console.log("base: setup");
-        console.log("");
+        logger.debug("[BaseTestCase] - setup");
         return this;
     }
 
     teardown() {
-        console.log("");
-        console.log("");
-        console.log("base: teardown");
+        logger.debug("[BaseTestCase] - teardown");
         return this;
     }
 }
@@ -59,15 +66,13 @@ function __runReport(results) {
         failedTests = results.filter(item => item.status === "fail");
 
     failedTests.forEach(failedTest => {
-        console.log("");
-        console.log(failedTest.testCaseName, ":", failedTest.testName);
-        console.error(failedTest.error);
+        logger.info(failedTest.testCaseName, ":", failedTest.testName);
+        logger.error(failedTest.error);
     });
 
-    console.log("");
-    console.log("================================");
-    console.log("pass:", passedTests.length, " -- fail:", failedTests.length);
-    console.log("================================");
+    logger.info("================================");
+    logger.info(`pass: ${passedTests.length} -- fail: ${failedTests.length}`);
+    logger.info("================================");
 
     if (failedTests.length > 0) {
         process.exit(1);
@@ -81,7 +86,7 @@ function __runTests(testCase) {
         tests = __getAllTests(testCase),
         results = [];
 
-    console.log(testCaseName + ":", tests.size, "tests");
+    logger.info(testCaseName + ":", tests.size, "tests");
 
     tests.forEach(test => {
         try {
@@ -103,6 +108,9 @@ function __runTests(testCase) {
         __updateTestResultProgress(results);
     });
 
+    // provide a little reading room after a test case report is rendered
+    console.log("\n");
+
     return results;
 }
 
@@ -119,7 +127,7 @@ function __updateTestResultProgress(results) {
 
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
-    process.stdout.write(progress);
+    process.stdout.write("\t" + progress);
 }
 
 function __getAllTests(testCase) {
