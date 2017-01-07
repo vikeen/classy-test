@@ -62,8 +62,10 @@ class BlueWidgetTestCase extends BaseWidgetTestCase {
     }
 }
 
-classyTest.run([
-    RedWidgetTestCase,
-    GreenWidgetTestCase,
-    BlueWidgetTestCase
-]);
+module.exports = {
+    TestCases: [
+        RedWidgetTestCase,
+        GreenWidgetTestCase,
+        BlueWidgetTestCase
+    ]
+};

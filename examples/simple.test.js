@@ -10,14 +10,16 @@ class SimpleComponentSumTestCase extends classyTest.BaseTestCase {
     }
 
     testSum() {
-        this.simpleComponent = new SimpleComponent([1, 2, 3, 4]);
-        assert.equal(this.simpleComponent.sum(), 10);
+        assert.equal(new SimpleComponent([1, 2, 3, 4]).sum(), 10);
     }
 
     testSort() {
-        this.simpleComponent = new SimpleComponent([4, 1, 5, 2, 3]);
-        assert.deepEqual(this.simpleComponent.sort(), [1, 2, 3, 4, 5]);
+        assert.deepEqual(new SimpleComponent([4, 1, 5, 2, 3]).sort(), [1, 2, 3, 4, 5]);
     }
 }
 
-classyTest.run(SimpleComponentSumTestCase);
+module.exports = {
+    TestCases: [
+        SimpleComponentSumTestCase
+    ]
+};
