@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/vikeen/classy-test.svg?branch=master)](https://travis-ci.org/vikeen/classy-test)
 
-Leverage ES6 make testing easier and faster.
+Opinionated class based testing framework.
 
 ## Install
 
