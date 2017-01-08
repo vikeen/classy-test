@@ -47,7 +47,64 @@ Set the default file extension for your test files.
 
 ## Examples
 
-For examples check [here](examples).
+### Component
+
+my-project/lib/component.js
+
+```js
+"use strict";
+
+class SimpleComponent {
+    constructor(numbers) {
+        this.numbers = numbers;
+    }
+
+    sum() {
+        return this.numbers.reduce((a, b) => a + b);
+    }
+
+    sort() {
+        return this.numbers.sort();
+    }
+}
+
+module.exports = SimpleComponent;
+```
+
+### Test File
+
+my-project/test/component.test.js
+
+```js
+"use strict";
+
+const Component = require("./component"),
+    classyTest = require("classy-test"),
+    assert = require("chai").assert;
+
+// extend base test case.
+class ComponentTestCase extends classyTest.BaseTestCase {
+    constructor() {
+        super();
+    }
+
+    // prefix all test functions in your test case with 'test'
+    testSum() {
+        assert.equal(new Component([1, 2, 3, 4]).sum(), 10);
+    }
+
+    testSort() {
+        assert.deepEqual(new Component([4, 1, 5, 2, 3]).sort(), [1, 2, 3, 4, 5]);
+    }
+}
+
+// export an array of test cases you want to run
+module.exports = [
+    Component
+];
+```
+
+For more examples check [here](examples).
 
 ## Team
 

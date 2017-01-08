@@ -1,6 +1,6 @@
 {
   "name": "classy-test",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Opinionated class based testing framework",
   "main": "index.js",
   "scripts": {
@@ -25,7 +25,7 @@
     "yargs": "6.6.0"
   },
   "bin": {
-    "classy-test": "classy-test-cli.js"
+    "classy-test": "./bin/classy-test-cli.js"
   },
   "directories": {
     "example": "examples",
