@@ -16,5 +16,28 @@
     "sinon": "1.17.7",
     "winston": "2.3.0",
     "yargs": "6.6.0"
-  }
+  },
+  "bin": {
+    "classy-test": "classy-test-cli.js"
+  },
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vikeen/class-test.git"
+  },
+  "keywords": [
+    "test",
+    "test-runner",
+    "es6",
+    "tests",
+    "class-based-test",
+    "test-inheritance"
+  ],
+  "bugs": {
+    "url": "https://github.com/vikeen/class-test/issues"
+  },
+  "homepage": "https://github.com/vikeen/class-test#readme"
 }
