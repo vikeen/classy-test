@@ -41,7 +41,7 @@ Relative paths to all directories that should be searched for test case files.
 ##### extension
 
 Type: `string` *(test file extension)* <br/>
-Default: `'.test.js`
+Default: `'.test.js'`
 
 Set the default file extension for your test files.
 
@@ -78,7 +78,7 @@ my-project/test/component.test.js
 ```js
 "use strict";
 
-const Component = require("./component"),
+const Component = require("../lib/component"),
     classyTest = require("classy-test"),
     assert = require("chai").assert;
 
@@ -100,8 +100,26 @@ class ComponentTestCase extends classyTest.BaseTestCase {
 
 // export an array of test cases you want to run
 module.exports = [
-    Component
+    ComponentTestCase
 ];
+```
+
+### Output
+
+```bash
+$ node node_modules/classy-test/bin/classy-test-cli.js                                                                                                                                                1 ↵
+debug: - 1 files found -
+debug: /Users/johnrake/dev/classy-test-sandbox/test/component.test.js
+debug: testing file - /Users/johnrake/dev/classy-test-sandbox/test/component.test.js
+debug: found 1 test case(s)
+debug: running test case [ComponentTestCase]
+info: [ComponentTestCase] - 2 tests
+	..
+
+info: ================================
+info: pass: 2 -- fail: 0
+info: ================================
+time taken: 35.084ms
 ```
 
 For more examples check [here](examples).
