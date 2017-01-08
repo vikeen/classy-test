@@ -7,13 +7,13 @@ const TestCaseResult = require("../../lib/helpers/test_case_result"),
 class TestCaseResultTestCase extends classyTest.BaseTestCase {
     constructor() {
         super();
-        this.testCaseResult = new TestCaseResult("testCase", "test");
+        this.testCaseResult = new TestCaseResult("emplyeeTestCase", "test");
     }
 
     testPass() {
         this.testCaseResult.pass();
 
-        assert.equal(this.testCaseResult.testCaseName, "testCase");
+        assert.equal(this.testCaseResult.testCaseName, "emplyeeTestCase");
         assert.equal(this.testCaseResult.testName, "test");
         assert.equal(this.testCaseResult.isPassedStatus, true);
         assert.equal(this.testCaseResult.isFailedStatus, false);
@@ -23,7 +23,7 @@ class TestCaseResultTestCase extends classyTest.BaseTestCase {
     testFail() {
         this.testCaseResult.fail(new Error('test error'));
 
-        assert.equal(this.testCaseResult.testCaseName, "testCase");
+        assert.equal(this.testCaseResult.testCaseName, "emplyeeTestCase");
         assert.equal(this.testCaseResult.testName, "test");
         assert.equal(this.testCaseResult.isPassedStatus, false);
         assert.equal(this.testCaseResult.isFailedStatus, true);

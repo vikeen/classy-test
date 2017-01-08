@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "recursive-readdir": "2.1.0",
+    "sinon": "1.17.7",
     "winston": "2.3.0",
     "yargs": "6.6.0"
   }
