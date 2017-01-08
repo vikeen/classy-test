@@ -6,8 +6,15 @@
   "scripts": {
     "test": "node bin/classy-test-cli.js -d test -d examples"
   },
-  "author": "John Rake",
-  "license": "ISC",
+  "author": {
+    "name": "John Rake",
+    "email": "john.rake12@gmail.com",
+    "url": "johnmrake.com"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=7"
+  },
   "devDependencies": {
     "chai": "3.5.0"
   },
@@ -29,11 +36,19 @@
     "url": "git+https://github.com/vikeen/class-test.git"
   },
   "keywords": [
+    "classy-test",
     "test",
+    "testing",
     "test-runner",
     "es6",
     "tests",
+    "javascript",
+    "js",
     "class-based-test",
+    "runner",
+    "simple",
+    "opionated",
+    "tdd",
     "test-inheritance"
   ],
   "bugs": {
