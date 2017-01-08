@@ -4,7 +4,7 @@
   "description": "Opinionated class based testing framework",
   "main": "index.js",
   "scripts": {
-    "test": "node bin/classy-test-cli.js -d test"
+    "test": "node bin/classy-test-cli.js -d test -d examples"
   },
   "author": "John Rake",
   "license": "ISC",

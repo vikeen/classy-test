@@ -7,7 +7,7 @@ const ClassyTestRunner = require("../lib/classy-test"),
         .usage('$0 -d [directory]')
         .alias('h', 'help')
         .alias('d', 'directory')
-        .demandOption('d')
+        .default('directory', 'test')
         .help()
         .argv;
 

@@ -80,6 +80,7 @@ class BaseProxyTestCase extends BaseTestCase {
     }
 
     testRunWithError() {
+        // giving the employee a raise is somehow an error. Tough world
         this.emplyeeTestCase.giveRaise();
 
         this.emplyeeTestCase.__run();
