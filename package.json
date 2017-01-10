@@ -1,6 +1,6 @@
 {
   "name": "classy-test",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Opinionated class based testing framework",
   "main": "index.js",
   "scripts": {
@@ -22,6 +22,7 @@
     "decamelize": "1.2.0",
     "recursive-readdir": "2.1.0",
     "sinon": "1.17.7",
+    "tap": "9.0.3",
     "winston": "2.3.0",
     "yargs": "6.6.0"
   },
