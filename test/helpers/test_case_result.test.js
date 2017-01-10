@@ -1,6 +1,6 @@
 "use strict";
 
-const TestCaseResult = require("../../lib/helpers/test_case_result"),
+const TestCaseResult = require("../../lib/helpers/test_result"),
     classyTest = require("../../index.js"),
     assert = require("chai").assert;
 
