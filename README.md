@@ -45,6 +45,13 @@ Default: `'.test.js'`
 
 Set the default file extension for your test files.
 
+##### disableLogging
+
+Type: `boolean` *(disable interal classy test logging)* <br/>
+Default: `false`
+
+This is used for our internal testing to make the logs cleaner. It is exposed has a "quality-of-life" feature.
+
 ## Examples
 
 ### Component
@@ -107,19 +114,26 @@ module.exports = [
 ### Output
 
 ```bash
-$ node node_modules/classy-test/bin/classy-test-cli.js                                                                                                                                                1 ↵
-debug: - 1 files found -
-debug: /Users/johnrake/dev/classy-test-sandbox/test/component.test.js
-debug: testing file - /Users/johnrake/dev/classy-test-sandbox/test/component.test.js
-debug: found 1 test case(s)
-debug: running test case [ComponentTestCase]
-info: [ComponentTestCase] - 2 tests
-	..
+$ npm test
 
-info: ================================
-info: pass: 2 -- fail: 0
-info: ================================
-time taken: 35.084ms
+> classy-test@1.0.3 test /Users/johnrake/dev/classy-test
+> node bin/classy-test-cli.js -d test -d examples
+
+debug: - 3 files found -
+debug: /Users/johnrake/dev/classy-test/test/base_test_case.test.js
+debug: /Users/johnrake/dev/classy-test/test/classy_test.test.js
+debug: /Users/johnrake/dev/classy-test/test/helpers/logger.test.js
+TAP version 13
+1..8
+ok 1 - test name
+ok 2 - test find all employee tests
+ok 3 - test find all person tests
+ok 4 - test valid file format
+ok 5 - test throw error if tests cases are not exported
+ok 6 - test valid test case
+ok 7 - test normal mode
+ok 8 - test debug mode
+# time=170.037ms
 ```
 
 For more examples check [here](examples).
