@@ -114,26 +114,14 @@ module.exports = [
 ### Output
 
 ```bash
-$ npm test
-
-> classy-test@1.0.3 test /Users/johnrake/dev/classy-test
-> node bin/classy-test-cli.js -d test -d examples
-
-debug: - 3 files found -
-debug: /Users/johnrake/dev/classy-test/test/base_test_case.test.js
-debug: /Users/johnrake/dev/classy-test/test/classy_test.test.js
-debug: /Users/johnrake/dev/classy-test/test/helpers/logger.test.js
+$ node bin/classy-test-cli.js -d examples
+debug: - 1 files found -
+debug: /Users/johnrake/dev/classy-test/examples/simple.test.js
 TAP version 13
-1..8
-ok 1 - test name
-ok 2 - test find all employee tests
-ok 3 - test find all person tests
-ok 4 - test valid file format
-ok 5 - test throw error if tests cases are not exported
-ok 6 - test valid test case
-ok 7 - test normal mode
-ok 8 - test debug mode
-# time=170.037ms
+1..2
+ok 1 - test sum
+ok 2 - test sort
+# time=117ms
 ```
 
 For more examples check [here](examples).
