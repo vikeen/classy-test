@@ -54,7 +54,9 @@ This is used for our internal testing to make the logs cleaner. It is exposed ha
 
 ## Examples
 
-### Component
+### Simple
+
+#### Component
 
 my-project/lib/component.js
 
@@ -78,7 +80,7 @@ class SimpleComponent {
 module.exports = SimpleComponent;
 ```
 
-### Test File
+#### Test File
 
 my-project/test/component.test.js
 
@@ -111,18 +113,93 @@ module.exports = [
 ];
 ```
 
-### Output
+### Promise Support
 
-```bash
-$ node bin/classy-test-cli.js -d examples
-debug: - 1 files found -
-debug: /Users/johnrake/dev/classy-test/examples/simple.test.js
-TAP version 13
-1..2
-ok 1 - test sum
-ok 2 - test sort
-# time=117ms
-```
+```js
+"use strict";
+
+const classyTest = require("../index.js"),
+    assert = require("chai").assert;
+
+class Invoice {
+    // simulate async database interaction
+    static getById(id) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (id) {
+                    resolve({
+                        id: 123,
+                        amount: 100,
+                        currency: "USD"
+                    });
+                } else {
+                    reject(new Error("invoice_not_found"));
+                }
+            }, 200);
+        });
+    }
+}
+
+// test case for all your project needs
+class ProjectBaseTestCase extends classyTest.BaseTestCase {
+    constructor() {
+        super();
+    }
+
+    setup() {
+        super.setup();
+        return this.bootstrapDatabase();
+    }
+
+    teardown() {
+        super.teardown();
+        return this.teardownDatabase();
+    }
+
+    bootstrapDatabase() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 500)
+        });
+    }
+
+    teardownDatabase() {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 500)
+        });
+    }
+}
+
+// Simple test case extended our base project test case
+class InvoiceTestCase extends ProjectBaseTestCase {
+    constructor() {
+        super();
+    }
+
+    testGetById() {
+        return Invoice.getById(123).then(invoice => {
+            assert.deepEqual(invoice, {
+                id: 123,
+                amount: 100,
+                currency: "USD"
+            });
+        }).catch(console.error);
+    }
+
+    testGetByIdError() {
+        return Invoice.getById(null).then(() => {
+            assert.isFalse(true, "the underlying promise should have failed. This block should never be run");
+        }).catch(error => {
+            assert.equal(error.message, "invoice_not_found");
+        });
+    }
+}
+
+module.exports = [InvoiceTestCase];
+``````
 
 For more examples check [here](examples).
 
