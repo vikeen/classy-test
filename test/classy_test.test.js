@@ -2,6 +2,7 @@
 
 const ClassyTest = require("../lib/classy_test"),
     BaseTestCase = require("../lib/base_test_case"),
+    Promise = require("bluebird"),
     assert = require("chai").assert,
     path = require("path");
 
@@ -26,7 +27,6 @@ class LoadTestCaseTestCase extends BaseClassyTestTestCase {
         this.classyTest.loadFile(filePath);
 
         assert.lengthOf(this.classyTest.TestCases, 1);
-        assert.deepEqual(this.classyTest.tests, ["testEqual", "testTrue"])
     }
 }
 
@@ -40,7 +40,6 @@ class LoadFileTestCase extends BaseClassyTestTestCase {
         this.classyTest.loadFile(filePath);
 
         assert.lengthOf(this.classyTest.TestCases, 1);
-        assert.deepEqual(this.classyTest.tests, ["testEqual", "testTrue"])
     }
 
     testThrowErrorIfTestsCasesAreNotExported() {
@@ -55,7 +54,59 @@ class LoadFileTestCase extends BaseClassyTestTestCase {
     }
 }
 
+class PromiseTestCase extends BaseClassyTestTestCase {
+    constructor() {
+        super();
+    }
+
+    setup() {
+        super.setup();
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 500)
+        });
+    }
+
+    teardown() {
+        super.teardown();
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve();
+            }, 500)
+        });
+    }
+
+    testHandlePromiseResolve() {
+        const promiseThatResolves = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(true);
+            }, 200)
+        });
+        return promiseThatResolves.then(response => {
+            assert.isTrue(response);
+        }).catch(error => {
+            assert.isFalse(true, "the underlying promise should have succeeded. This block should never be run");
+        });
+    }
+
+    testHandlePromiseReject() {
+        const promiseThatRejects = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                reject(new Error("handle_promise_error_message"));
+            }, 200);
+        });
+
+        return promiseThatRejects.then(() => {
+            assert.isFalse(true, "the underlying promise should have failed. This block should never be run");
+        }).catch(error => {
+            assert.equal(error.message, "handle_promise_error_message");
+        });
+    }
+}
+
 module.exports = [
     LoadFileTestCase,
-    LoadTestCaseTestCase
+    LoadTestCaseTestCase,
+    PromiseTestCase
 ];

@@ -1,63 +1,55 @@
 "use strict";
 
-const ClassyTest = require("../lib/classy_test"),
-    BaseTestCase = require("../lib/base_test_case"),
-    sinon = require("sinon"),
+const BaseTestCase = require("../lib/base_test_case"),
     assert = require("chai").assert;
 
-class PersonTestCase extends BaseTestCase {
+class Person {
     constructor(name) {
-        super();
         this.name = name;
-    }
-
-    testName() {
-        assert.isDefined(this.name);
     }
 }
 
-class EmployeeTestCase extends PersonTestCase {
+class Employee extends Person {
     constructor(name, company) {
         super(name);
         this.company = company;
         this.salary = 10000;
     }
-
-    testCompany() {
-        assert.isDefined(this.company);
-    }
 }
 
-class BaseProxyTestCase extends BaseTestCase {
+class PersonTestCase extends BaseTestCase {
     constructor() {
         super();
     }
 
     setup() {
-        this.classyTest = new ClassyTest([], null, true);
-        this.emplyeeTestCase = new EmployeeTestCase("Brenda Yukon", "C2FO");
-        this.personTestCase = new PersonTestCase("Bob Yukon");
+        super.setup();
+        this.person = new Person("Bob Yukon");
     }
 
-    teardown() {
-        this.emplyeeTestCase = undefined;
-        this.personTestCase = undefined;
-    }
-
-    testName() {
-        assert.equal(this.personTestCase.__name, 'PersonTestCase');
-        assert.equal(this.emplyeeTestCase.__name, 'EmployeeTestCase');
-    }
-
-    testFindAllEmployeeTests() {
-        this.classyTest.loadTestCase(EmployeeTestCase);
-        assert.deepEqual(this.classyTest.tests, ['testCompany', 'testName']);
-    }
-
-    testFindAllPersonTests() {
-        this.classyTest.loadTestCase(PersonTestCase);
-        assert.deepEqual(this.classyTest.tests, ['testName']);
+    testPerson() {
+        assert.equal("Bob Yukon", this.person.name);
     }
 }
 
-module.exports = [BaseProxyTestCase];
+class EmployeeTestCase extends BaseTestCase {
+    constructor() {
+        super();
+    }
+
+    setup() {
+        super.setup();
+        this.employee = new Employee("Brenda Yukon", "C2FO");
+    }
+
+    testEmployee() {
+        assert.equal(this.employee.company, "C2FO");
+        assert.equal(this.employee.salary, 10000);
+        assert.equal(this.employee.name, "Brenda Yukon");
+    }
+}
+
+module.exports = [
+    PersonTestCase,
+    EmployeeTestCase
+];
