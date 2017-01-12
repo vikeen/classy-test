@@ -4,6 +4,13 @@
 
 Opinionated class based testing framework.
 
+## Features
+
+* Extensible es6 class test case. Leverage more with less code.
+* Structured tests name syntax - *testMyComponentCanAdd*. 
+* TAP reporting with [node-tap](http://www.node-tap.org/)
+* Full A+ promise support through [bluebird](http://bluebirdjs.com/docs/getting-started.html)
+
 ## Install
 
 ```bash
