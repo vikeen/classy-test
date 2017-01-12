@@ -22,7 +22,7 @@ class LoadTestCaseTestCase extends BaseClassyTestTestCase {
     }
 
     testValidTestCase() {
-        let filePath = path.resolve("test/assets/exported_test_cases.js");
+        let filePath = path.resolve("test/assets/exported_test_case.js");
         this.classyTest.loadFile(filePath);
 
         assert.lengthOf(this.classyTest.TestCases, 1);
@@ -36,7 +36,7 @@ class LoadFileTestCase extends BaseClassyTestTestCase {
     }
 
     testValidFileFormat() {
-        let filePath = path.resolve("test/assets/exported_test_cases.js");
+        let filePath = path.resolve("test/assets/exported_test_case.js");
         this.classyTest.loadFile(filePath);
 
         assert.lengthOf(this.classyTest.TestCases, 1);
@@ -44,7 +44,7 @@ class LoadFileTestCase extends BaseClassyTestTestCase {
     }
 
     testThrowErrorIfTestsCasesAreNotExported() {
-        let filePath = path.resolve("test/assets/no_exported_test_cases.js");
+        let filePath = path.resolve("test/assets/no_exported_test_case.js");
 
         try {
             this.classyTest.loadFile(filePath);
